@@ -30,6 +30,7 @@
   }
   var divDimension = document.getElementsByClassName("cuteDiv");
   for(var y = 0; y < numberOfDivs; ++y){
+      console.log(divDimension[y]);
     // Takes the 'divHeight' and divides it by 100 to determine the % sizing to size each div based on the user input.
     divDimension[y].style.height = (100 / divHeight) + '%';
     // Sets the minimum height to 10 pixels
