@@ -1,100 +1,137 @@
-(function () {
-	var body = document.body,
-			container = document.getElementById('main'),
-			_sqrt = Math.sqrt,
-			_floor = Math.floor,
-			_random = Math.random,
-			otherFactor,
-			columns,
-			input,
-			blocks,
-			current,
-			top,
-			right,
-			bottom,
-			left;
+(function() {
+  // Function variables.
+  var updateBlock;
+  var findWhichToRecolor;
+  var whichArray;
+  var blockOnClick;
+  var buildBlock;
+  var getFactors;
+  var createBlocks;
+  var initialize;
 
-	function updateBlock (self, color) {
-		self.style.backgroundColor = color;
-		self.value = '1';
-		self.onclick = null;
-		return self;
-	}
+  // Element variables.
+  var fragment  = document.createDocumentFragment();
 
-	function findWhichToRecolor (index, color, array) {
-		top = blocks[index - columns];
-		right = blocks[index + 1];
-		bottom = blocks[index + columns];
-		left = blocks[index - 1];
+  // Math variables.
+  var _sqrt   = Math.sqrt;
+  var _floor  = Math.floor;
+  var _random = Math.random;
+  var _round  = Math.round;
+  var _max    = Math.max;
 
-		if (index >= columns && top.value != '1') {
-			array.push(updateBlock(top, color));
-		}
+  // Regular variables.
+  var count;
+  var blocks;
+  var columns;
+  var rows;
+  var timer;
 
-		if (index % columns !== (columns - 1) && right.value != '1') {
-			array.push(updateBlock(right, color));
-		}
 
-		if (index < (input - columns) && bottom.value != '1') {
-			array.push(updateBlock(bottom, color));
-		}
+  updateBlock = function(element, color) {
+    element.value = '1';
+    element.onclick = null;
+    element.style.backgroundColor = color;
 
-		if (index % columns !== 0 && left.value != '1') {
-			array.push(updateBlock(left, color));
-		}
+    return element;
+  }
 
-		return array;
-	}
+  findWhichToRecolor = function(index, color, array) {
+    var top     = blocks[index - columns];
+    var right   = blocks[index + 1];
+    var bottom  = blocks[index + columns];
+    var left    = blocks[index - 1];
 
-	function whichArray (currentArray, nextArray, color) {
-		if (currentArray.length > 0) {
-			nextArray = findWhichToRecolor(blocks.indexOf(currentArray[0]), color, nextArray);
-			currentArray.shift();
-			whichArray(currentArray, nextArray, color);
-		} else if (nextArray.length > 0) {
-			setTimeout(function () {
-				whichArray(nextArray, [], color);
-			}, 75);
-		}
-	}
+    if (index >= columns && top.value !== '1') {
+      array.push(updateBlock(top, color));
+    }
 
-	function buildBlock (block, factors) {
-		block.className = 'block';
-		block.value = '0';
-		block.style.width = (100 / factors[0]) + '%';
-		block.style.height = (100 / factors[1]) + '%';
-		block.style.backgroundColor = '#' + _floor(_random() * 16777215).toString(16);
-		block.onclick = blockOnClick;
+    if (index % columns !== (columns - 1) && right.value !== '1') {
+      array.push(updateBlock(right, color));
+    }
 
-		container.appendChild(block);
-		
-		return block;
-	}
+    if (index < (count - columns) && bottom.value !== '1') {
+      array.push(updateBlock(bottom, color));
+    }
 
-	function getFactors (input, factor) {
-		columns = factor;
-		otherFactor = (input / factor);
+    if (index % columns !== 0 && left.value !== '1') {
+      array.push(updateBlock(left, color));
+    }
 
-		return otherFactor % 1 === 0 ? [factor, otherFactor] : getFactors(input, --factor);
-	}
+    return array;
+  }
 
-	function createBlocks (input, id, blocks, factors) {
-		if (id < input) {
-			factors = factors || getFactors(input, _floor(_sqrt(input)));
-			blocks.push(buildBlock(document.createElement('div'), factors));
-			return createBlocks(input, ++id, blocks, factors);
-		} else {
-			return blocks;
-		}
-	}
+  whichArray = function(currentArray, nextArray, color) {
+    if (currentArray.length > 0) {
 
-	function blockOnClick () {
-		this.value = '1';
-		this.blockOnClick = null;
-		whichArray([this], [], this.style.backgroundColor);
-	}
+      for (var i = 0; i < currentArray.length; ++i) {
+        nextArray = findWhichToRecolor(
+          blocks.indexOf(currentArray[0]),
+          color,
+          nextArray
+        );
 
-	input = prompt('How many blocks do you want?');
-	blocks = createBlocks(input, 0, []);
+        currentArray.shift();
+      }
 
-})();
+      whichArray(currentArray, nextArray, color);
+
+    } else if (nextArray.length > 0) {
+
+      console.log(timer);
+
+      setTimeout(function() {
+        whichArray(nextArray, [], color);
+      }, timer);
+
+    }
+  }
+
+  blockOnClick = function() {
+    this.value = '1';
+    this.blockOnClick = null;
+    whichArray([this], [], this.style.backgroundColor);
+  }
+
+  buildBlock = function(element, factors) {
+    element.className = 'block';
+    element.value = '0';
+    element.style.width = (100 / factors[0]) + '%';
+    element.style.height = (100 / factors[1]) + '%';
+    element.style.backgroundColor = '#' + _floor(_random() * 16777215).toString(16);
+    element.onclick = blockOnClick;
+
+    fragment.appendChild(element);
+    
+    return element;
+  }
+
+  getFactors = function(factor) {
+    columns = factor;
+    rows    = count / factor;
+    timer   = 500 / _max(columns, rows);
+
+    return rows % 1 === 0 ? [columns, rows] : getFactors(columns -= 1);
+  }
+
+  createBlocks = function(array) {
+    var factors = getFactors( _floor( _sqrt(count) ) );
+
+    for (var i = 0; i < count; ++i) {
+      array.push(buildBlock(document.createElement('div'), factors));
+    }
+
+    document.body.appendChild(fragment);
+
+    return array;
+  }
+
+  initialize = function() {
+    count   = prompt('How many blocks do you want?');
+    blocks  = createBlocks([]);
+  }
+
+
+  return {
+    initialize: initialize
+  }
+})().initialize();
