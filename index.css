@@ -1,0 +1,205 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: Roboto, Arial, sans-serif;
+}
+
+body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+
+/* =========================
+         Animations
+========================= */
+
+@-webkit-keyframes creating {
+    0% {
+      content: 'Creating' !important;
+    }
+
+    25% {
+      content: 'Creating.' !important;
+    }
+
+    50% {
+      content: 'Creating..' !important;
+    }
+
+    75% {
+      content: 'Creating...' !important;
+    }
+
+    100% {
+      content: 'Creating' !important;
+    }
+}
+
+@keyframes creating {
+    0% {
+      content: 'Creating' !important;
+    }
+
+    25% {
+      content: 'Creating.' !important;
+    }
+
+    50% {
+      content: 'Creating..' !important;
+    }
+
+    75% {
+      content: 'Creating...' !important;
+    }
+
+    100% {
+      content: 'Creating' !important;
+    }
+}
+
+
+/* =========================
+       Helper Classes
+========================= */
+
+.hidden {
+  display: none;
+}
+
+.animate:after {
+  -webkit-animation: creating 1s linear 0s infinite;
+          animation: creating 1s linear 0s infinite;
+  content: 'Creating' !important;
+}
+
+
+/* =========================
+         Containers
+========================= */
+
+.input {
+  margin: 0 auto;
+  padding-top: 20vh;
+  width: 320px;
+  z-index: 10;
+}
+
+.container {
+  height: 100vh;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 20;
+}
+
+
+/* =========================
+           Blocks
+========================= */
+
+.block {
+  display: inline-block;
+  float: left;
+  min-height: 1px;
+  min-width: 1px;
+}
+
+
+/* =========================
+            Label
+========================= */
+
+label {
+  display: block;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 28px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+
+/* =========================
+            Input
+========================= */
+
+input {
+  border: 1px solid #BDBDBD;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 16px;
+  padding: 8px 16px;
+  width: 200px;
+}
+
+input:focus {
+  border-color: #304FFE;
+  outline: 0;
+}
+
+
+/* =========================
+           Button
+========================= */
+
+button {
+  background-color: #283593;
+  border: 1px solid #1A237E;
+  border-radius: 4px;
+  border-width: 0 1px 4px 1px;
+  color: #FFF;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 30px;
+  margin: 0 0 0 10px;
+  padding: 0;
+  text-align: center;
+  text-transform: uppercase;
+  vertical-align: middle;
+  width: 90px;
+}
+
+button:after {
+  content: 'Create';
+}
+
+button:focus {
+  outline: 0;
+}
+
+button:hover {
+  border-bottom-width: 3px;
+  margin-top: 1px;
+}
+
+button:active {
+  border-bottom-width: 2px;
+  margin-top: 2px;
+}
+
+button:focus,
+button:hover,
+button:active {
+  background-color: #3949AB;
+  border-color: #303F9F;
+}
+
+button:focus:hover,
+button:active:hover,
+button:active:focus {
+  background-color: #3F51B5;
+  border-color: #3949AB;
+}
+
+button:active:focus:hover {
+  background-color: #5C6BC0;
+  border-color: #3F51B5;
+}
