@@ -72,9 +72,9 @@ body {
 }
 
 .animate:after {
+  content: 'Creating';
   -webkit-animation: creating 1s linear 0s infinite;
           animation: creating 1s linear 0s infinite;
-  content: 'Creating' !important;
 }
 
 

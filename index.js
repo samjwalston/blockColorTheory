@@ -182,6 +182,8 @@
     width   = (100 / factors.columns) + '%';
     height  = (100 / factors.rows) + 'vh';
 
+    // Can run through ~ 25k in 300ms.
+
     // Builds the block elements.
     while (value > 0) {
       block = buildBlock(width, height);
