@@ -1,4 +1,4 @@
-;(function() {
+(function() {
   // Function variables.
   var updateBlock;
   var findWhichToRecolor;
